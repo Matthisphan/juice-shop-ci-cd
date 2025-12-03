@@ -14,9 +14,14 @@
     "resolveJsonModule": true,
     "lib": [
       "es2020"
+    ],
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
     ]
   },
   "include": [
+    "src/types/**/*.d.ts",
     "cypress/**/*.ts",
     "data/**/*.ts",
     "lib/**/*.ts",
@@ -36,6 +41,5 @@
     "build",
     "vagrant",
     "data/static/codefixes/**",
-    "**/*.d.ts"
   ]
 }
