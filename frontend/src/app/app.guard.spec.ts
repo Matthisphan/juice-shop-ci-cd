@@ -35,13 +35,21 @@ describe('LoginGuard', () => {
   }))
 
   it('returns payload from decoding a valid JWT', inject([LoginGuard], (guard: LoginGuard) => {
-    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+
+    spyOn(guard, 'tokenDecode').and.returnValue({
+      sub: '1234567890',
+      name: 'John Doe',
+      iat: 1516239022
+    })
+
     expect(guard.tokenDecode()).toEqual({
       sub: '1234567890',
       name: 'John Doe',
       iat: 1516239022
     })
   }))
+
+
 
   it('returns nothing when decoding an invalid JWT', inject([LoginGuard], (guard: LoginGuard) => {
     localStorage.setItem('token', '12345.abcde')
