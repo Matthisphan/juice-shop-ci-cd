@@ -14,7 +14,7 @@ export function trackOrder () {
       ? String(req.params.id).replace(/[^\w-]+/g, '')
       : utils.trunc(req.params.id, 60)
 
-    challengeUtils.solveIf(git
+    challengeUtils.solveIf(
       challenges.reflectedXssChallenge,
       () => utils.contains(id, '<iframe src="javascript:alert(`xss`)">')
     )
