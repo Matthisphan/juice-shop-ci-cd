@@ -10,12 +10,11 @@ import { challenges } from '../data/datacache'
 
 export function trackOrder () {
   return (req: Request, res: Response) => {
-    // Sanitize or truncate ID depending on challenge mode
     const id = !utils.isChallengeEnabled(challenges.reflectedXssChallenge)
       ? String(req.params.id).replace(/[^\w-]+/g, '')
       : utils.trunc(req.params.id, 60)
 
-    challengeUtils.solveIf(
+    challengeUtils.solveIf(git
       challenges.reflectedXssChallenge,
       () => utils.contains(id, '<iframe src="javascript:alert(`xss`)">')
     )
