@@ -65,12 +65,19 @@ router.post('/', async (req: Request<Record<string, unknown>, Record<string, unk
     })
 
     res.clearCookie('token')
+    // Only pass explicitly allowed properties to prevent template injection
+    const templateData = {
+      email: req.body.email,
+      securityAnswer: req.body.securityAnswer
+    }
+
     if (req.body.layout) {
       const filePath: string = path.resolve(req.body.layout).toLowerCase()
       const isForbiddenFile: boolean = (filePath.includes('ftp') || filePath.includes('ctf.key') || filePath.includes('encryptionkeys'))
       if (!isForbiddenFile) {
         res.render('dataErasureResult', {
-          ...req.body
+          ...templateData,
+          layout: req.body.layout
         }, (error, html) => {
           if (!html || error) {
             next(new Error(error.message))
@@ -84,9 +91,7 @@ router.post('/', async (req: Request<Record<string, unknown>, Record<string, unk
         next(new Error('File access not allowed'))
       }
     } else {
-      res.render('dataErasureResult', {
-        ...req.body
-      })
+      res.render('dataErasureResult', templateData)
     }
   } catch (error) {
     next(error)
